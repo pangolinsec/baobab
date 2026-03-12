@@ -1,0 +1,42 @@
+title: Baobab
+description: A tree-based conversation UI for LLM APIs — branch, explore, and manage multi-threaded AI conversations.
+url: ""
+baseurl: "/baobab/docs"
+
+theme: just-the-docs
+
+color_scheme: light
+
+aux_links:
+  "GitHub":
+    - "https://github.com/OWNER/baobab"
+
+nav_sort: order
+
+heading_anchors: true
+
+permalink: pretty
+
+back_to_top: true
+back_to_top_text: "Back to top"
+
+footer_content: "Baobab is open source under the MIT License."
+
+callouts:
+  note:
+    title: Note
+    color: blue
+  warning:
+    title: Warning
+    color: red
+  tip:
+    title: Tip
+    color: green
+
+exclude:
+  - node_modules/
+  - vendor/
+  - Gemfile.lock
+
+plugins:
+  - jekyll-seo-tag

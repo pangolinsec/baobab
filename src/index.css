@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Claude-like color variables */
+:root {
+  --color-bg: #FAF9F6;
+  --color-bg-secondary: #F0EBE4;
+  --color-accent: #D97757;
+  --color-accent-hover: #C4683E;
+  --color-text: #3D3229;
+  --color-text-secondary: #6B5F55;
+  --color-text-muted: #8B7E74;
+  --color-border: #E0D5CB;
+  --color-card: #FFFFFF;
+  --color-user-card: #F5EDE8;
+  --color-sidebar-bg: #F0EBE4;
+  --color-border-soft: #E0D5CB;
+  --color-placeholder: #B0A89E;
+  --color-edge: #C4B5A6;
+  --color-scrollbar: #C4B5A6;
+  --color-bg-hover: #E8E1D9;
+  --color-bg-tertiary: #E0D5CB;
+  --color-reply-target: #5B8A72;
+  --color-reply-target-bg: #5B8A7215;
+  --color-warning: #B8860B;
+  --color-warning-bg: #B8860B15;
+}
+
+.dark {
+  --color-bg: #1C1917;
+  --color-bg-secondary: #2A2520;
+  --color-accent: #D97757;
+  --color-accent-hover: #E08B6D;
+  --color-text: #E0D5CB;
+  --color-text-secondary: #A89B91;
+  --color-text-muted: #A89B91;
+  --color-border: #3D3229;
+  --color-card: #2A2520;
+  --color-user-card: #3D2E24;
+  --color-sidebar-bg: #1C1917;
+  --color-border-soft: #2A2520;
+  --color-placeholder: #6B5F55;
+  --color-edge: #5C4F44;
+  --color-scrollbar: #4A3F35;
+  --color-bg-hover: #231F1B;
+  --color-bg-tertiary: #4A3F35;
+  --color-reply-target: #7DB89A;
+  --color-reply-target-bg: #7DB89A15;
+  --color-warning: #D4A017;
+  --color-warning-bg: #D4A01715;
+}
+
+/* Base styles */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hide React Flow attribution */
+.react-flow__attribution {
+  display: none !important;
+}
+
+/* React Flow edge styling overrides */
+.react-flow__edge-path {
+  stroke: var(--color-edge);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Active path highlighting (root → selected node) */
+.react-flow__edge.active-path .react-flow__edge-path {
+  stroke: var(--color-accent);
+  stroke-width: 3;
+}
+
+/* Merge overlay edges (dashed lines to source nodes) */
+.react-flow__edge.merge-overlay .react-flow__edge-path {
+  stroke: #7C9AB5;
+  stroke-width: 1.5;
+  stroke-opacity: 0.45;
+}
+
+/* Merge overlay edges — highlighted when on active path or source selected */
+.react-flow__edge.merge-overlay-active .react-flow__edge-path {
+  stroke: #7C9AB5;
+  stroke-width: 3;
+  stroke-opacity: 1;
+}
+
+/* Dead-end edge dimming */
+.react-flow__edge.dead-end-edge .react-flow__edge-path {
+  stroke-opacity: 0.3;
+}
+
+/* Search match highlight ring */
+.react-flow__node.search-match .react-flow__node-messageNode {
+  outline: 2px solid #D4A017;
+  outline-offset: 2px;
+  border-radius: 16px;
+}
+
+/* Animated edge for streaming */
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 5;
+  animation: flowDash 0.5s linear infinite;
+}
+
+@keyframes flowDash {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+
+/* MiniMap styling */
+.react-flow__minimap {
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar);
+  border-radius: 3px;
+}
+
+/* Prose overrides for markdown */
+.prose pre {
+  background: var(--color-bg-secondary) !important;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.prose code {
+  font-size: 0.85em;
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+  background: var(--color-bg-secondary);
+}
+
+.prose a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.prose a:hover {
+  text-decoration: underline;
+}

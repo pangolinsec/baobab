@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./src:/app/src
+      - ./index.html:/app/index.html
+      - ./public:/app/public
+      - ./package.json:/app/package.json
+      - ./vite.config.ts:/app/vite.config.ts
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./tsconfig.app.json:/app/tsconfig.app.json
+      - /app/node_modules
+    environment:
+      - VITE_HOST=0.0.0.0
+
+  api:
+    build:
+      context: ./server
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./server/src:/app/src
+      - ./server/package.json:/app/package.json
+      - ./server/tsconfig.json:/app/tsconfig.json
+      - baobab-data:/data
+      - /app/node_modules
+    environment:
+      - DATA_DIR=/data
+      - NODE_ENV=development
+
+volumes:
+  baobab-data:

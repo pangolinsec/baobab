@@ -1,0 +1,15 @@
+[
+  { "providerId": "anthropic", "modelPattern": "claude-opus-4", "displayName": "Claude Opus 4", "inputPricePerMillion": 5.00, "outputPricePerMillion": 25.00 },
+  { "providerId": "anthropic", "modelPattern": "claude-sonnet-4", "displayName": "Claude Sonnet 4", "inputPricePerMillion": 3.00, "outputPricePerMillion": 15.00 },
+  { "providerId": "anthropic", "modelPattern": "claude-haiku-4", "displayName": "Claude Haiku 4", "inputPricePerMillion": 1.00, "outputPricePerMillion": 5.00 },
+  { "providerId": "anthropic", "modelPattern": "claude-3-5-sonnet", "displayName": "Claude 3.5 Sonnet", "inputPricePerMillion": 3.00, "outputPricePerMillion": 15.00 },
+  { "providerId": "anthropic", "modelPattern": "claude-3-5-haiku", "displayName": "Claude 3.5 Haiku", "inputPricePerMillion": 1.00, "outputPricePerMillion": 5.00 },
+  { "providerId": "openai", "modelPattern": "gpt-4o-mini", "displayName": "GPT-4o Mini", "inputPricePerMillion": 0.15, "outputPricePerMillion": 0.60 },
+  { "providerId": "openai", "modelPattern": "gpt-4o", "displayName": "GPT-4o", "inputPricePerMillion": 2.50, "outputPricePerMillion": 10.00 },
+  { "providerId": "openai", "modelPattern": "o1", "displayName": "o1", "inputPricePerMillion": 15.00, "outputPricePerMillion": 60.00 },
+  { "providerId": "openai", "modelPattern": "o3-mini", "displayName": "o3 Mini", "inputPricePerMillion": 1.10, "outputPricePerMillion": 4.40 },
+  { "providerId": "openai", "modelPattern": "o3", "displayName": "o3", "inputPricePerMillion": 2.00, "outputPricePerMillion": 8.00 },
+  { "providerId": "gemini", "modelPattern": "gemini-2.5-flash", "displayName": "Gemini 2.5 Flash", "inputPricePerMillion": 0.30, "outputPricePerMillion": 2.50 },
+  { "providerId": "gemini", "modelPattern": "gemini-2.5-pro", "displayName": "Gemini 2.5 Pro", "inputPricePerMillion": 1.25, "outputPricePerMillion": 10.00 },
+  { "providerId": "gemini", "modelPattern": "gemini-2.0-flash", "displayName": "Gemini 2.0 Flash", "inputPricePerMillion": 0.10, "outputPricePerMillion": 0.40 }
+]
