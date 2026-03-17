@@ -12,9 +12,22 @@ export function WelcomeScreen() {
   const effectiveModel = currentConversation?.model || defaultModel;
   const effectivePrompt = currentConversation?.systemPrompt ?? defaultSystemPrompt;
 
+  const basePath = import.meta.env.BASE_URL || '/';
+
   return (
-    <div className="flex-1 overflow-y-auto">
-      <div className="max-w-lg w-full mx-auto py-12 px-8 space-y-6">
+    <div className="flex-1 overflow-y-auto relative">
+      {/* Baobab background silhouette */}
+      <div
+        className="absolute inset-0 pointer-events-none dark:invert"
+        style={{
+          backgroundImage: `url(${basePath}baobab-bg.png)`,
+          backgroundPosition: 'bottom center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '80% auto',
+          opacity: 0.03,
+        }}
+      />
+      <div className="max-w-lg w-full mx-auto py-12 px-8 space-y-6 relative z-10">
         {/* Config summary */}
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-[var(--color-text)]">New Conversation</h2>

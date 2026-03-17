@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { GitBranch, Plus, MessageSquare, AlertCircle } from 'lucide-react';
+import { Plus, MessageSquare, AlertCircle } from 'lucide-react';
 import { useTreeStore } from '../../store/useTreeStore';
 import { useSettingsStore } from '../../store/useSettingsStore';
 import { ChatInput } from '../chat/ChatInput';
@@ -30,14 +30,29 @@ export function LandingPage() {
     // Stay on / — the component will re-render with draft state
   };
 
+  const basePath = import.meta.env.BASE_URL || '/';
+
   return (
-    <div className="flex-1 flex items-center justify-center">
-      <div className="max-w-md w-full px-6">
+    <div className="flex-1 flex items-center justify-center relative overflow-hidden">
+      {/* Baobab background silhouette */}
+      <div
+        className="absolute inset-0 pointer-events-none dark:invert"
+        style={{
+          backgroundImage: `url(${basePath}baobab-bg.png)`,
+          backgroundPosition: 'bottom center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '90% auto',
+          opacity: 0.04,
+        }}
+      />
+      <div className="max-w-md w-full px-6 relative z-10">
         {/* Title + description */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[var(--color-accent)]/10 mb-4">
-            <GitBranch size={24} className="text-[var(--color-accent)]" />
-          </div>
+          <img
+            src={`${basePath}icon-192.png`}
+            alt="Baobab"
+            className="w-12 h-12 mx-auto mb-4 opacity-80"
+          />
           <h1 className="text-2xl font-bold text-[var(--color-text)] mb-2">
             Baobab
           </h1>
