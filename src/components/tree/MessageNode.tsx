@@ -106,7 +106,7 @@ function MessageNodeComponent({ data }: NodeProps) {
 
         {/* Thinking indicator */}
         {!isUser && node.thinkingBlocks && node.thinkingBlocks.length > 0 && (
-          <Brain size={12} className="text-[var(--color-accent)]" title="Has thinking content" />
+          <span title="Has thinking content"><Brain size={12} className="text-[var(--color-accent)]" /></span>
         )}
 
         {/* Tool call badge */}

@@ -147,12 +147,12 @@ export function ReasoningBlocksSection({ nodeId, blocks, compact, lastAssistantN
 
                 {/* Signature lock */}
                 {hasSig && (
-                  <Lock size={12} className="text-emerald-500" title="Has cryptographic signature" />
+                  <span title="Has cryptographic signature"><Lock size={12} className="text-emerald-500" /></span>
                 )}
 
                 {/* Encrypted content indicator */}
                 {hasEncrypted && !isFiltered && (
-                  <ShieldCheck size={12} className="text-blue-500" title="Has encrypted reasoning content" />
+                  <span title="Has encrypted reasoning content"><ShieldCheck size={12} className="text-blue-500" /></span>
                 )}
 
                 {/* Last-turn filter warning */}

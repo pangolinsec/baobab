@@ -49,7 +49,7 @@ export function Sidebar() {
   const globalResults = useSearchStore((s) => s.globalResults);
   const isSearching = useSearchStore((s) => s.isSearching);
 
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const debouncedSearch = useMemo(() => {
     return () => {
       clearTimeout(debounceRef.current);

@@ -8,7 +8,6 @@ import {
   useReactFlow,
   type Node,
   type NodeMouseHandler,
-  type NodeDragHandler,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { ZoomIn, ZoomOut, Maximize2, Lock, Unlock, RotateCcw } from 'lucide-react';
@@ -178,8 +177,8 @@ export function TreeView({ searchMatchIds }: TreeViewProps) {
     [treeNodes, closeMenu, resend, retry]
   );
 
-  const handleNodeDragStop: NodeDragHandler = useCallback(
-    (_event, node) => {
+  const handleNodeDragStop = useCallback(
+    (_event: React.MouseEvent, node: Node) => {
       useTreeStore.getState().setNodePosition(node.id, node.position);
     },
     []
@@ -219,7 +218,7 @@ export function TreeView({ searchMatchIds }: TreeViewProps) {
         <MiniMap
           className="!bg-[var(--color-bg-secondary)] !border-[var(--color-border)] rounded-lg"
           nodeColor={(node) =>
-            node.data?.node?.role === 'user' ? '#D97757' : '#C4B5A6'
+            (node.data as Record<string, any>)?.node?.role === 'user' ? '#D97757' : '#C4B5A6'
           }
           maskColor={theme === 'dark' ? 'rgba(28, 25, 23, 0.7)' : 'rgba(250, 249, 246, 0.7)'}
         />

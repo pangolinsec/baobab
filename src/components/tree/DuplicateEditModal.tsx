@@ -72,6 +72,7 @@ export function DuplicateEditModal({ nodeId, onClose }: DuplicateEditModalProps)
         providerId: editableBlock?.providerId || 'plaintext',
         isOriginal: editableBlock?.isOriginal ?? true,
         plaintextEnabled: editableBlock?.plaintextEnabled ?? true,
+        active: editableBlock?.active ?? true,
         sourceNodeId: editableBlock?.sourceNodeId,
         sourceConversationId: editableBlock?.sourceConversationId,
       });

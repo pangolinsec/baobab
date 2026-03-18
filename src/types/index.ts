@@ -61,6 +61,14 @@ export interface ThinkingBlock {
   injectAtEnd?: boolean;  // Append after last user message (for OpenAI reasoning injection)
 }
 
+export interface CoverageScore {
+  totalTerms: number;
+  coveredTerms: string[];
+  uncoveredTerms: string[];
+  coveragePercent: number;
+  termLocations: Record<string, number>;
+}
+
 export interface TreeNode {
   id: string;
   conversationId: string;

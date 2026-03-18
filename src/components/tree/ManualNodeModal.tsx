@@ -57,6 +57,7 @@ export function ManualNodeModal({ parentNodeId, onClose }: ManualNodeModalProps)
       providerId: 'plaintext',
       isOriginal: true,
       plaintextEnabled: true,
+      active: true,
     }];
   };
 

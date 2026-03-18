@@ -284,7 +284,7 @@ export function RawContextTab({ node }: RawContextTabProps) {
                     Headers not available for this provider.
                   </div>
                 )}
-                {node.rawApiResponse.body && (
+                {node.rawApiResponse.body != null && (
                   <div className="mt-2">
                     <span className="text-[var(--color-text-muted)] text-xs">Response body</span>
                     <div className="mt-1">
