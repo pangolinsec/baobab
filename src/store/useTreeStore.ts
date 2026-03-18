@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { TreeNode, Conversation, TokenUsage, RawApiRequest, RawApiResponse, ThinkingBlock } from '../types';
 import type { ToolCallRecord } from '../api/providers/types';
 import { db } from '../db/database';
+import { useSettingsStore } from './useSettingsStore';
 
 interface TreeState {
   conversations: Conversation[];
@@ -144,9 +145,7 @@ export const useTreeStore = create<TreeState>((set, get) => ({
   },
 
   createConversation: async (title?: string, systemPrompt?: string) => {
-    const { defaultModel } = await import('./useSettingsStore').then(m =>
-      m.useSettingsStore.getState()
-    );
+    const { defaultModel } = useSettingsStore.getState();
 
     const rootNode: TreeNode = {
       id: crypto.randomUUID(),
@@ -691,7 +690,7 @@ export const useTreeStore = create<TreeState>((set, get) => ({
 
     const { collectBranchContent, formatBranchForSummary } = await import('../lib/summarize');
     const { sendMessage } = await import('../api/claude');
-    const settingsStore = await import('./useSettingsStore').then(m => m.useSettingsStore.getState());
+    const settingsStore = useSettingsStore.getState();
 
     const direction = options?.direction ?? 'up';
     const branch = collectBranchContent(nodeId, nodes, direction);
@@ -772,7 +771,7 @@ export const useTreeStore = create<TreeState>((set, get) => ({
 
     const { findCommonAncestor, collectBranchFromAncestor, buildMergeUserContent, buildMergePromptMessages } = await import('../lib/merge');
     const { sendMessage } = await import('../api/claude');
-    const settingsStore = await import('./useSettingsStore').then(m => m.useSettingsStore.getState());
+    const settingsStore = useSettingsStore.getState();
 
     const ancestorId = findCommonAncestor(nodeIdA, nodeIdB, nodes);
     if (!ancestorId) return;
