@@ -1,5 +1,7 @@
 # Baobab
 
+**[Try it live](https://pangolinsec.github.io/baobab/)** | **[Documentation](https://pangolinsec.github.io/baobab/docs/)**
+
 A tree-based conversation UI for LLMs. Branch from any response to explore multiple threads of thought, with full linear context preserved from root to leaf.
 
 Built as a standalone web app that calls LLM APIs directly from the browser — no backend required for core functionality. Conversations render as an interactive node-and-edge graph.
