@@ -54,6 +54,8 @@ export function NodeDetailPanel() {
   const prefillDuplicateUser = useTreeStore((s) => s.prefillDuplicateUser);
   const toggleStar = useTreeStore((s) => s.toggleStar);
   const toggleDeadEnd = useTreeStore((s) => s.toggleDeadEnd);
+  const nodes = useTreeStore((s) => s.nodes);
+  const replyTargetNodeId = useTreeStore((s) => s.replyTargetNodeId);
   const defaultSystemPrompt = useSettingsStore((s) => s.defaultSystemPrompt);
   const customPricing = useSettingsStore((s) => s.customPricing);
   const [detailPanelTab, setDetailPanelTab] = useState<'node' | 'raw'>('node');
@@ -76,6 +78,17 @@ export function NodeDetailPanel() {
     }
   }, [selectedNodeId, setDetailPanelTab]);
 
+  // Compute last assistant node in the path for OpenAI last-turn filtering visualization
+  const lastAssistantNodeId = useMemo(() => {
+    if (!node) return undefined;
+    const pathRoot = replyTargetNodeId || node.id;
+    const path = getPathToRoot(pathRoot, nodes);
+    for (let i = path.length - 1; i >= 0; i--) {
+      if (path[i].role === 'assistant') return path[i].id;
+    }
+    return undefined;
+  }, [replyTargetNodeId, node?.id, nodes]);
+
   if (!node) return null;
   // Don't show panel for the silent root node
   if (node.parentId === null && !node.content) return null;
@@ -83,18 +96,6 @@ export function NodeDetailPanel() {
   const isUser = node.role === 'user';
   const isRoot = node.parentId === null;
   const isError = node.content.startsWith('Error: ');
-
-  // Compute last assistant node in the path for OpenAI last-turn filtering visualization
-  const nodes = useTreeStore((s) => s.nodes);
-  const replyTargetNodeId = useTreeStore((s) => s.replyTargetNodeId);
-  const lastAssistantNodeId = useMemo(() => {
-    const pathRoot = replyTargetNodeId || node.id;
-    const path = getPathToRoot(pathRoot, nodes);
-    for (let i = path.length - 1; i >= 0; i--) {
-      if (path[i].role === 'assistant') return path[i].id;
-    }
-    return undefined;
-  }, [replyTargetNodeId, node.id, nodes]);
 
   const hasRawIndicator = !!(
     node.toolCalls?.length ||
