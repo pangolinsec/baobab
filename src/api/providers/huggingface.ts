@@ -2,6 +2,7 @@ import type { LLMProvider, ProviderConfig, ProviderModelInfo, ProviderSendParams
 import { filterResponseHeaders } from './types';
 import type { TokenUsage } from '../../types';
 import { readSSEStream } from './sse';
+import { mergeCustomModels } from './customModels';
 
 export class HuggingFaceProvider implements LLMProvider {
   id = 'huggingface';
@@ -66,7 +67,7 @@ export class HuggingFaceProvider implements LLMProvider {
       })
     );
 
-    return available;
+    return mergeCustomModels(available, config, this.id);
   }
 
   async sendMessage(config: ProviderConfig, params: ProviderSendParams): Promise<void> {

@@ -3,6 +3,7 @@ import { filterResponseHeaders } from './types';
 import type { TokenUsage } from '../../types';
 import type { LivePricingEntry } from '../../lib/pricing';
 import { readSSEStream } from './sse';
+import { mergeCustomModels } from './customModels';
 
 export class OpenRouterProvider implements LLMProvider {
   id = 'openrouter';
@@ -24,20 +25,24 @@ export class OpenRouterProvider implements LLMProvider {
   }
 
   async fetchModels(config: ProviderConfig): Promise<ProviderModelInfo[]> {
-    const response = await fetch(`${this.baseUrl}/models`, {
-      headers: { Authorization: `Bearer ${config.apiKey}` },
-    });
-    if (!response.ok) throw new Error('Failed to fetch OpenRouter models');
-
-    const data = await response.json() as { data: { id: string; name: string }[] };
-    return data.data
-      .sort((a, b) => (a.name || a.id).localeCompare(b.name || b.id))
-      .slice(0, 500)
-      .map((m) => ({
-        id: m.id,
-        displayName: m.name || m.id,
-        providerId: this.id,
-      }));
+    let fetched: ProviderModelInfo[] = [];
+    try {
+      const response = await fetch(`${this.baseUrl}/models`, {
+        headers: { Authorization: `Bearer ${config.apiKey}` },
+      });
+      if (response.ok) {
+        const data = await response.json() as { data: { id: string; name: string }[] };
+        fetched = data.data
+          .sort((a, b) => (a.name || a.id).localeCompare(b.name || b.id))
+          .slice(0, 500)
+          .map((m) => ({ id: m.id, displayName: m.name || m.id, providerId: this.id }));
+      } else if ((config.customModels?.length ?? 0) === 0) {
+        throw new Error('Failed to fetch OpenRouter models');
+      }
+    } catch (err) {
+      if ((config.customModels?.length ?? 0) === 0) throw err;
+    }
+    return mergeCustomModels(fetched, config, this.id);
   }
 
   async fetchPricing(config: ProviderConfig): Promise<LivePricingEntry[]> {

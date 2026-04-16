@@ -5,12 +5,14 @@ export interface ProviderConfig {
   baseUrl?: string;
   enabled: boolean;
   azureModels?: import('../../types').AzureModelEntry[];
+  customModels?: import('../../types').CustomModelEntry[];
 }
 
 export interface ProviderModelInfo {
   id: string;
   displayName: string;
   providerId: string;
+  isCustom?: boolean;
 }
 
 import type { TokenUsage } from '../../types';

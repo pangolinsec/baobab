@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import type { LLMProvider, ProviderConfig, ProviderModelInfo, ProviderSendParams, ToolCallRecord, ProviderToolUseBlock } from './types';
 import type { TokenUsage } from '../../types';
+import { mergeCustomModels } from './customModels';
 
 let client: Anthropic | null = null;
 
@@ -32,30 +33,26 @@ export class AnthropicProvider implements LLMProvider {
   }
 
   async fetchModels(config: ProviderConfig): Promise<ProviderModelInfo[]> {
-    const anthropic = getClient(config.apiKey);
-    const response = await anthropic.models.list({ limit: 100 });
-    const models: ProviderModelInfo[] = [];
-
-    for (const model of response.data) {
-      if (model.id.startsWith('claude-')) {
-        models.push({
-          id: model.id,
-          displayName: model.display_name,
-          providerId: this.id,
-        });
+    let fetched: ProviderModelInfo[] = [];
+    try {
+      const anthropic = getClient(config.apiKey);
+      const response = await anthropic.models.list({ limit: 100 });
+      for (const model of response.data) {
+        if (model.id.startsWith('claude-')) {
+          fetched.push({ id: model.id, displayName: model.display_name, providerId: this.id });
+        }
       }
+      const tierOrder = (id: string) => {
+        if (id.includes('haiku')) return 0;
+        if (id.includes('sonnet')) return 1;
+        if (id.includes('opus')) return 2;
+        return 3;
+      };
+      fetched.sort((a, b) => tierOrder(a.id) - tierOrder(b.id) || b.id.localeCompare(a.id));
+    } catch (err) {
+      if ((config.customModels?.length ?? 0) === 0) throw err;
     }
-
-    // Sort: haiku first, then sonnet, then opus
-    const tierOrder = (id: string) => {
-      if (id.includes('haiku')) return 0;
-      if (id.includes('sonnet')) return 1;
-      if (id.includes('opus')) return 2;
-      return 3;
-    };
-    models.sort((a, b) => tierOrder(a.id) - tierOrder(b.id) || b.id.localeCompare(a.id));
-
-    return models;
+    return mergeCustomModels(fetched, config, this.id);
   }
 
   async sendMessage(config: ProviderConfig, params: ProviderSendParams): Promise<void> {

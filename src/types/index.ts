@@ -35,6 +35,13 @@ export interface AzureModelEntry {
   isReasoningModel: boolean; // true → Responses API + reasoning capture; false → Chat Completions
 }
 
+export interface CustomModelEntry {
+  id: string;                 // UUID
+  slug: string;               // exact string sent as `model` to the API
+  displayName?: string;       // optional human-friendly label
+  isReasoningModel?: boolean; // OpenAI-only: routes to Responses API
+}
+
 export interface ProviderConfigData {
   id: string;
   name: string;
@@ -43,6 +50,7 @@ export interface ProviderConfigData {
   enabled: boolean;
   enabledModels?: string[];
   azureModels?: AzureModelEntry[];  // only used when id === 'azure'
+  customModels?: CustomModelEntry[]; // user-provided slugs merged into model list
 }
 
 export interface ThinkingBlock {

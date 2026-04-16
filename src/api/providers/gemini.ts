@@ -2,6 +2,7 @@ import type { LLMProvider, ProviderConfig, ProviderModelInfo, ProviderSendParams
 import { filterResponseHeaders } from './types';
 import type { TokenUsage } from '../../types';
 import { readSSEStream } from './sse';
+import { mergeCustomModels } from './customModels';
 
 export class GeminiProvider implements LLMProvider {
   id = 'gemini';
@@ -23,20 +24,22 @@ export class GeminiProvider implements LLMProvider {
   }
 
   async fetchModels(config: ProviderConfig): Promise<ProviderModelInfo[]> {
-    const response = await fetch(
-      `${this.baseUrl}/models?key=${config.apiKey}`
-    );
-    if (!response.ok) throw new Error('Failed to fetch Gemini models');
-
-    const data = await response.json() as { models: { name: string; displayName: string; supportedGenerationMethods: string[] }[] };
-    return data.models
-      .filter((m) => m.supportedGenerationMethods?.includes('generateContent'))
-      .filter((m) => m.name.includes('gemini'))
-      .map((m) => ({
-        id: m.name.replace('models/', ''),
-        displayName: m.displayName,
-        providerId: this.id,
-      }));
+    let fetched: ProviderModelInfo[] = [];
+    try {
+      const response = await fetch(`${this.baseUrl}/models?key=${config.apiKey}`);
+      if (response.ok) {
+        const data = await response.json() as { models: { name: string; displayName: string; supportedGenerationMethods: string[] }[] };
+        fetched = data.models
+          .filter((m) => m.supportedGenerationMethods?.includes('generateContent'))
+          .filter((m) => m.name.includes('gemini'))
+          .map((m) => ({ id: m.name.replace('models/', ''), displayName: m.displayName, providerId: this.id }));
+      } else if ((config.customModels?.length ?? 0) === 0) {
+        throw new Error('Failed to fetch Gemini models');
+      }
+    } catch (err) {
+      if ((config.customModels?.length ?? 0) === 0) throw err;
+    }
+    return mergeCustomModels(fetched, config, this.id);
   }
 
   async sendMessage(config: ProviderConfig, params: ProviderSendParams): Promise<void> {

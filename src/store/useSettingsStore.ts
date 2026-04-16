@@ -338,8 +338,10 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
       }
     }
 
-    // Store full unfiltered catalog, then apply per-provider allowlists
+    // Store full unfiltered catalog, then apply per-provider allowlists.
+    // Custom user-added models bypass the allowlist — they're opt-in by existing.
     const filtered = allModels.filter(m => {
+      if (m.isCustom) return true;
       const provConfig = providers.find(p => p.id === m.providerId);
       const allowed = provConfig?.enabledModels;
       if (!allowed || allowed.length === 0) return true;
@@ -364,6 +366,7 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
     // Re-filter locally without re-fetching from APIs
     const { fullModelCatalog } = get();
     const filtered = fullModelCatalog.filter(m => {
+      if (m.isCustom) return true;
       const provConfig = providers.find(p => p.id === m.providerId);
       const allowed = provConfig?.enabledModels;
       if (!allowed || allowed.length === 0) return true;

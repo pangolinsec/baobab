@@ -17,6 +17,9 @@ import { useSettingsStore } from '../../store/useSettingsStore';
 import { getAllProviders, getProvider } from '../../api/providers/registry';
 import { DEFAULT_PRICING, formatCost } from '../../lib/pricing';
 import { ManageModelsDialog } from '../settings/ManageModelsDialog';
+import { CustomModelsSection } from '../settings/CustomModelsSection';
+
+const CUSTOM_MODELS_PROVIDERS = new Set(['openai', 'anthropic', 'gemini', 'huggingface', 'openrouter']);
 import type { ProviderConfigData, CustomPricingEntry, AzureModelEntry } from '../../types';
 import type { AzureModelValidationResult } from '../../api/providers/azure';
 import { AzureProvider } from '../../api/providers/azure';
@@ -1048,6 +1051,15 @@ function ProvidersSection() {
                         className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-3 py-2 text-sm text-[var(--color-text)] placeholder-[var(--color-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                       />
                     </div>
+                  )}
+
+                  {/* Custom model slugs */}
+                  {CUSTOM_MODELS_PROVIDERS.has(provider.id) && (
+                    <CustomModelsSection
+                      entries={provider.customModels ?? []}
+                      showReasoningFlag={provider.id === 'openai'}
+                      onChange={(customModels) => updateProvider(provider.id, { customModels })}
+                    />
                   )}
 
                   {/* Test Connection */}
